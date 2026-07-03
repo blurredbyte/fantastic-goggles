@@ -11,7 +11,7 @@ WORKDIR /app
 COPY . /app
 
 # 3. Installing packages with --no-cache which can hide issues, and not pinning versions
-RUN pip install --no-cache-dir flask
+RUN pip install --no-cache-dir -r requirements.txt
 
 # 4. Running the container as the root user (default)
 # This is a major security risk. If an attacker gains control of the
@@ -20,4 +20,4 @@ RUN pip install --no-cache-dir flask
 # 5. Exposing an unnecessary port
 EXPOSE 8080
 
-CMD [ "python", "app.py" ]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]

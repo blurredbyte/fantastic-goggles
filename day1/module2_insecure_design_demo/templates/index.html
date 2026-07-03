@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Insecure Design Demo</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Insecure Design Demo</h1>
+    <p>Try to access the <a href="/dashboard?user=user1">dashboard</a> as user1 (not an admin) and <a href="/dashboard?user=user2">dashboard</a> as user2 (an admin).</p>
+</body>
+</html>

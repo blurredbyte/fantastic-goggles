@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Profile</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Profile for {{ profile.name }}</h1>
+    <p><strong>Email:</strong> {{ profile.email }}</p>
+    <p><strong>Secret:</strong> <span class="{{ 'secret-secure' if is_secure else 'secret-vulnerable' }}">{{ profile.secret }}</span></p>
+
+    {% if is_secure %}
+    <p><em>This is a secure endpoint. You can only see your own profile.</em></p>
+    {% endif %}
+
+    <p><a href="/">Back to Home</a></p>
+</body>
+</html>

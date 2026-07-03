@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Fetcher</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Image Fetcher</h1>
+    <p>Enter the URL of an image to display it.</p>
+    <form method="get" action="/fetch">
+        <input type="text" name="url" size="100" value="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60">
+        <input type="submit" value="Fetch Image">
+    </form>
+
+    <hr>
+
+    {% if error %}
+        <h2 style="color:red;">Error</h2>
+        <p>{{ error }}</p>
+    {% endif %}
+
+    {% if content %}
+        <h2>Fetched Content</h2>
+        <!-- This is a naive way to display content. It might not render an image
+             if the URL points to something else, but it will display the text. -->
+        <pre>{{ content }}</pre>
+    {% endif %}
+
+    <h2>Attack Ideas</h2>
+    <p>Try fetching these URLs:</p>
+    <ul>
+        <li>To access a local file: <code>file:///etc/passwd</code></li>
+        <li>To access the internal admin panel (running on port 8001): <code>http://internal:8001/admin</code></li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vulnerable Settings</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Vulnerable Settings Page</h1>
+    <p>Welcome, {{ session['username'] }}!</p>
+    <p>Your current email is: {{ users[session['username']]['email'] }}</p>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="post" action="/change-email-vulnerable">
+        <label>New Email:</label><input type="email" name="email"><br>
+        <input type="submit" value="Change Email">
+    </form>
+    <p><a href="/logout">Logout</a></p>
+</body>
+</html>

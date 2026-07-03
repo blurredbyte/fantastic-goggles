@@ -1,4 +1,4 @@
-from flask import Flask, render_template_string, request, abort
+from flask import Flask, render_template, request, abort
 
 app = Flask(__name__)
 
@@ -14,7 +14,7 @@ LOGGED_IN_USER_ID = '1'
 
 @app.route('/')
 def index():
-    return f'<h1>Broken Access Control (IDOR) Demo</h1><p>You are logged in as user {LOGGED_IN_USER_ID} (Alice).</p><p>Try to view your own profile: <a href="/profile/{LOGGED_IN_USER_ID}">View my profile</a></p><p>Then, try to view Bob\'s profile by changing the ID in the URL: <a href="/profile/2">View Bob\'s profile</a></p>'
+    return render_template('index.html', user_id=LOGGED_IN_USER_ID)
 
 @app.route('/profile/<user_id>')
 def profile(user_id):
@@ -26,19 +26,7 @@ def profile(user_id):
 
     profile_data = PROFILES[user_id]
 
-    return render_template_string('''
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>User Profile</title>
-        </head>
-        <body>
-            <h1>Profile for {{ profile.name }}</h1>
-            <p><strong>Email:</strong> {{ profile.email }}</p>
-            <p><strong>Secret:</strong> <span style="color:red;">{{ profile.secret }}</span></p>
-        </body>
-        </html>
-    ''', profile=profile_data)
+    return render_template('profile.html', profile=profile_data, is_secure=False)
 
 # A fixed version of the profile route for comparison
 @app.route('/secure_profile/<user_id>')
@@ -53,20 +41,7 @@ def secure_profile(user_id):
 
     profile_data = PROFILES[user_id]
 
-    return render_template_string('''
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>User Profile</title>
-        </head>
-        <body>
-            <h1>Profile for {{ profile.name }}</h1>
-            <p><strong>Email:</strong> {{ profile.email }}</p>
-            <p><strong>Secret:</strong> <span style="color:green;">{{ profile.secret }}</span></p>
-            <p><em>This is a secure endpoint. You can only see your own profile.</em></p>
-        </body>
-        </html>
-    ''', profile=profile_data)
+    return render_template('profile.html', profile=profile_data, is_secure=True)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5002)

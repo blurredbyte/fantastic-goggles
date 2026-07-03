@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cloud Native Security Demo</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Cloud Native Security Demo</h1>
+    <p>Hello, World!</p>
+    <div class="secret-box">
+        <p>The DB password is (supposedly a secret): <code>{{ db_password }}</code></p>
+    </div>
+</body>
+</html>

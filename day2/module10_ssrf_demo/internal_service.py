@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -8,7 +8,7 @@ def index():
 
 @app.route('/admin')
 def admin():
-    return "<h1>PRIVATE ADMIN PANEL</h1><p>This page contains sensitive information.</p><p>Admin API Key: adm_sk_1234567890abcdef</p>"
+    return render_template('admin.html', api_key="adm_sk_1234567890abcdef")
 
 if __name__ == '__main__':
     # This service runs on a different port and should only be accessible

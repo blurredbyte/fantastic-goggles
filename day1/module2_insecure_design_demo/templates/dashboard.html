@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function checkAccess() {
+            var isAdmin = {{ user.isAdmin|tojson }};
+            if (isAdmin) {
+                document.getElementById('admin-content').style.display = 'block';
+            } else {
+                document.getElementById('user-content').style.display = 'block';
+            }
+        }
+    </script>
+</head>
+<body onload="checkAccess()">
+    <h1>Dashboard</h1>
+    <div id="user-content" style="display:none;">
+        <p>Welcome, {{ username }}! You are a regular user.</p>
+    </div>
+    <div id="admin-content" style="display:none;">
+        <p>Welcome, {{ username }}! You are an admin.</p>
+        <p><strong>Admin Secret:</strong> The treasure is buried under the big 'W'.</p>
+    </div>
+</body>
+</html>

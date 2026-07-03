@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>CSRF Demo</h1>
+    <p>Welcome, {{ username }}!</p>
+    <p><a href="/vulnerable-settings">Go to VULNERABLE Settings Page</a></p>
+    <p><a href="/secure-settings">Go to SECURE Settings Page</a></p>
+    <p><a href="/malicious-site" target="_blank">Visit the Attacker's Website (open in new tab)</a></p>
+</body>
+</html>
