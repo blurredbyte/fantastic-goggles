@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cryptography Demo</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Cryptography Demo: Password Hashing</h1>
+
+    <div class="container">
+        <form method="post">
+            <label for="password">Enter a password to hash:</label>
+            <input type="text" id="password" name="password" required>
+            <input type="submit" value="Hash Password">
+        </form>
+    </div>
+
+    {% if password %}
+    <div class="results">
+        <h2>Results for "{{ password }}"</h2>
+
+        <div class="result-box">
+            <h3>Weak Hashing (MD5 - No Salt)</h3>
+            <p><strong>Hash:</strong> <code>{{ hashed_weak }}</code></p>
+            <p class="warning">Warning: MD5 is not secure. The same password always produces the same hash, making it vulnerable to rainbow table attacks.</p>
+        </div>
+
+        <div class="result-box">
+            <h3>Strong Hashing (Bcrypt - With Salt)</h3>
+            <p><strong>Hash:</strong> <code>{{ hashed_strong.decode('utf-8') }}</code></p>
+            <p class="success">Secure: Bcrypt automatically includes a random salt. Hashing the same password again will produce a different hash.</p>
+        </div>
+    </div>
+    {% endif %}
+</body>
+</html>

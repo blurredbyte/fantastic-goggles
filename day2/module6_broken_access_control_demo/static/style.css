@@ -1,0 +1,23 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+}
+h1 {
+    color: #333;
+}
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+.secret-vulnerable {
+    color: red;
+    font-weight: bold;
+}
+.secret-secure {
+    color: green;
+    font-weight: bold;
+}

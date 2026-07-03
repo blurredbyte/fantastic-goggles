@@ -18,60 +18,6 @@ users = {
 # In-memory session data
 sessions = {}
 
-# --- Templates ---
-
-LOGIN_TEMPLATE = """
-<h1>Login</h1>
-<form method="post" action="/login">
-    <label>Username:</label><input type="text" name="username" value="user1"><br>
-    <label>Password:</label><input type="password" name="password" value="password"><br>
-    <input type="submit" value="Login">
-</form>
-"""
-
-# This settings form is VULNERABLE to CSRF
-VULNERABLE_SETTINGS_TEMPLATE = """
-<h1>Vulnerable Settings Page</h1>
-<p>Welcome, {{ session['username'] }}!</p>
-<p>Your current email is: {{ users[session['username']]['email'] }}</p>
-<form method="post" action="/change-email-vulnerable">
-    <label>New Email:</label><input type="email" name="email"><br>
-    <input type="submit" value="Change Email">
-</form>
-<p><a href="/logout">Logout</a></p>
-"""
-
-# This settings form is SECURE against CSRF
-SECURE_SETTINGS_TEMPLATE = """
-<h1>Secure Settings Page</h1>
-<p>Welcome, {{ session['username'] }}!</p>
-<p>Your current email is: {{ users[session['username']]['email'] }}</p>
-<form method="post" action="/change-email-secure">
-    <!-- This hidden input adds the CSRF token to the form -->
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <label>New Email:</label><input type="email" name="email"><br>
-    <input type="submit" value="Change Email">
-</form>
-<p><a href="/logout">Logout</a></p>
-"""
-
-MALICIOUS_PAGE_TEMPLATE = """
-<h1>You've Won a Prize!</h1>
-<p>Click the button below to claim your prize!</p>
-<!-- This form is hosted on an attacker's website. It silently submits a request
-     to the vulnerable application. If the user is logged in, their email will be changed. -->
-<form id="csrf-form" method="post" action="http://127.0.0.1:5004/change-email-vulnerable">
-    <input type="hidden" name="email" value="hacker@example.com">
-</form>
-<button onclick="document.getElementById('csrf-form').submit();">Claim Prize</button>
-<script>
-    // In a real attack, this could be submitted automatically without user interaction.
-    // For demonstration, we use a button.
-    // Example of automatic submission:
-    // window.onload = () => { document.getElementById('csrf-form').submit(); };
-</script>
-"""
-
 # --- Routes ---
 
 @app.before_request
@@ -86,13 +32,7 @@ def check_session():
 @app.route('/')
 def index():
     if 'username' in session:
-        return f"""
-            <h1>CSRF Demo</h1>
-            <p>Welcome, {session['username']}!</p>
-            <p><a href="/vulnerable-settings">Go to VULNERABLE Settings Page</a></p>
-            <p><a href="/secure-settings">Go to SECURE Settings Page</a></p>
-            <p><a href="/malicious-site" target="_blank">Visit the Attacker's Website (open in new tab)</a></p>
-        """
+        return render_template('index.html', username=session['username'])
     return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -108,7 +48,7 @@ def login():
             return resp
         else:
             flash("Invalid credentials")
-    return render_template_string(LOGIN_TEMPLATE)
+    return render_template('login.html')
 
 @app.route('/logout')
 def logout():
@@ -124,7 +64,7 @@ def logout():
 def vulnerable_settings():
     if 'username' not in session:
         return redirect(url_for('login'))
-    return render_template_string(VULNERABLE_SETTINGS_TEMPLATE, users=users, session=session)
+    return render_template('vulnerable_settings.html', users=users, session=session)
 
 @app.route('/change-email-vulnerable', methods=['POST'])
 def change_email_vulnerable():
@@ -142,7 +82,7 @@ def change_email_vulnerable():
 def secure_settings():
     if 'username' not in session:
         return redirect(url_for('login'))
-    return render_template_string(SECURE_SETTINGS_TEMPLATE, users=users, session=session)
+    return render_template('secure_settings.html', users=users, session=session)
 
 @app.route('/change-email-secure', methods=['POST'])
 def change_email_secure():
@@ -158,7 +98,7 @@ def change_email_secure():
 # --- Attacker's Site ---
 @app.route('/malicious-site')
 def malicious_site():
-    return render_template_string(MALICIOUS_PAGE_TEMPLATE)
+    return render_template('malicious_site.html')
 
 # --- Error Handling for CSRF ---
 @app.errorhandler(CSRFError)

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Login</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <form method="post" action="/login">
+        <!-- This hidden input adds the CSRF token to the form -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <label>Username:</label><input type="text" name="username" value="user1"><br>
+        <label>Password:</label><input type="password" name="password" value="password"><br>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Code Quality Demo</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Code Quality Demo: Hardcoded Secrets</h1>
+
+    <div class="demo-section">
+        <h2>Insecure Connection Method</h2>
+        <div class="console-output">
+            {% for line in insecure_output %}
+                <p>{{ line }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Secure Connection Method</h2>
+        <div class="console-output">
+            {% for line in secure_output %}
+                <p>{{ line }}</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

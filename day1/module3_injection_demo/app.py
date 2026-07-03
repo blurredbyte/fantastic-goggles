@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, request, render_template_string
+from flask import Flask, request, render_template
 
 app = Flask(__name__)
 DB_FILE = "users.db"
@@ -30,25 +30,15 @@ def login():
                 cursor.execute(query)
                 user = cursor.fetchone()
             except sqlite3.Error as e:
-                return f"An error occurred: {e}"
+                return render_template('login.html', error=f"An error occurred: {e}")
 
 
         if user:
-            return f'<h1>Welcome, {user[1]}!</h1><p>Login successful.</p>'
+            return render_template('success.html', username=user[1])
         else:
-            return '<h1>Login Failed</h1><p>Invalid username or password.</p>'
+            return render_template('login.html', error="Login Failed: Invalid username or password.")
 
-    return '''
-        <h1>Login</h1>
-        <form method="post">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username"><br><br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password"><br><br>
-            <input type="submit" value="Login">
-        </form>
-        <p>Try to log in with username: <code>' OR 1=1 --</code> and any password.</p>
-    '''
+    return render_template('login.html')
 
 if __name__ == '__main__':
     init_db()

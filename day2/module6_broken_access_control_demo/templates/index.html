@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Broken Access Control Demo</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Broken Access Control (IDOR) Demo</h1>
+    <p>You are logged in as user {{ user_id }} (Alice).</p>
+    <p>Try to view your own profile: <a href="/profile/{{ user_id }}">View my profile</a></p>
+    <p>Then, try to view Bob's profile by changing the ID in the URL: <a href="/profile/2">View Bob's profile</a></p>
+</body>
+</html>

@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, request, render_template_string, abort
+from flask import Flask, request, render_template, abort
 
 app = Flask(__name__)
 DB_FILE = "ctf.db"
@@ -20,39 +20,12 @@ def init_db():
         cursor.execute("INSERT INTO invoices (user_id, amount, details) VALUES (2, 25.00, 'Invoice for Mouse')")
         conn.commit()
 
-# --- Templates ---
-
-SEARCH_TEMPLATE = """
-<h1>Product Search</h1>
-<form method="get" action="/search">
-    <input type="text" name="q" size="50">
-    <input type="submit" value="Search">
-</form>
-<hr>
-{% if products %}
-    <h2>Search Results</h2>
-    <ul>
-    {% for product in products %}
-        <li>{{ product[1] }}: {{ product[2] }}</li>
-    {% endfor %}
-    </ul>
-{% endif %}
-"""
-
-INVOICE_TEMPLATE = """
-<h1>Invoice Details</h1>
-<p><strong>Invoice ID:</strong> {{ invoice[0] }}</p>
-<p><strong>User ID:</strong> {{ invoice[1] }}</p>
-<p><strong>Amount:</strong> ${{ invoice[2] }}</p>
-<p><strong>Details:</strong> {{ invoice[3] }}</p>
-"""
-
 # --- Routes ---
 
 @app.route('/')
 def index():
     # For the CTF, we'll simulate being logged in as user 1.
-    return '<h1>CTF Challenge App</h1><p>You are logged in as user 1.</p><ul><li><a href="/search">Product Search</a></li><li><a href="/invoice/1">View Your Invoice (ID 1)</a></li><li>Try to find the other user\'s invoice!</li></ul>'
+    return render_template('index.html')
 
 # This search is vulnerable to SQL Injection. Vulnerability #2
 @app.route('/search')
@@ -68,7 +41,7 @@ def search():
             cursor.execute(sql_query)
             products = cursor.fetchall()
 
-    return render_template_string(SEARCH_TEMPLATE, products=products)
+    return render_template('search.html', products=products)
 
 # This endpoint is vulnerable to IDOR. Vulnerability #3
 @app.route('/invoice/<invoice_id>')
@@ -83,7 +56,7 @@ def invoice(invoice_id):
     if not invoice_data:
         abort(404)
 
-    return render_template_string(INVOICE_TEMPLATE, invoice=invoice_data)
+    return render_template('invoice.html', invoice=invoice_data)
 
 
 if __name__ == '__main__':

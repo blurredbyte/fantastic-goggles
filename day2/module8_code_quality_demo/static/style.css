@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+}
+h1, h2 {
+    color: #333;
+}
+.demo-section {
+    margin-bottom: 30px;
+}
+.console-output {
+    background-color: #1e1e1e;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #000;
+}
+.console-output p {
+    margin: 5px 0;
+}

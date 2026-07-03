@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Next Gen AppSec Demo</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Next Gen AppSec Demo</h1>
+    <p>This demo application contains a hardcoded AWS access key in its source code.</p>
+    <p>The goal is to demonstrate how automated tools (like TruffleHog in a CI/CD pipeline) can detect these secrets before they are merged into the main branch.</p>
+
+    <div class="code-block">
+        <h3>Sample Output:</h3>
+        <p>{{ output }}</p>
+    </div>
+</body>
+</html>

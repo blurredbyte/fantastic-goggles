@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
@@ -7,7 +7,7 @@ app.config['SECRET_KEY'] = 'a_very_secret_key_that_should_not_be_leaked'
 
 @app.route('/')
 def index():
-    return '<h1>Insecure Error Handling Demo</h1><p>This application is running in debug mode.</p><p>Try to trigger an error by visiting a non-existent page like <a href="/divide?a=10&b=0">/divide?a=10&b=0</a>.</p>'
+    return render_template('index.html')
 
 @app.route('/divide')
 def divide():
